@@ -1,0 +1,24 @@
+{% extends "webpage/base.html" %}
+{% block Titel %} Create/Modify a Document {% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="container">
+<div class="panel panel-default procustom-panel-create">
+    <div class="panel-heading procustom-panel-heading">
+        <h1>Create/Edit Document</h1>
+        {% if object %}
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li class="active">{{ object }}</li>
+            </ol>
+      {% endif %}
+
+    </div>
+    <div class="panel-body">
+        {% crispy form %}
+    </div>
+</div>
+</div>
+
+{% endblock content %}

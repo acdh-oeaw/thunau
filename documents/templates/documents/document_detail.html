@@ -1,0 +1,156 @@
+{% extends "webpage/base.html" %}
+{% load staticfiles %}
+{% block scriptHeader %}
+<!--leafletjs -->
+    <link rel="stylesheet" href="{% static 'webpage/libraries/leaflet/leaflet.css' %}" />
+    <script src="{% static 'webpage/libraries/leaflet/leaflet.js' %}"></script>
+        <style>
+            #map { height: 500px; }
+        </style>
+
+{% endblock %}
+{% block content %}
+    <h1>{{ object }}</h1>
+
+    <legend>Original Document</legend>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th class="col-sm-3">legacy ID</th>
+            <td>{{object.legacy_id}}</td>
+        </tr>
+        <tr>
+            <th>Dateiname</th>
+            <td>{{ object.filename }}</td>
+        </tr>
+        <tr>
+            <th>Ordnungskriterium/Eingabe</th>
+            <td>{{ object.entry_order }}</td>
+        </tr>
+        <tr>
+            <th>Medium</th>
+            <td>{{ object.medium }}</td>
+        </tr>
+        <tr>
+            <th>Analoges Format</th>
+            <td>{{ object.analogue_format }}</td>
+        </tr>
+        <tr>
+            <th>Autor</th>
+            <td>
+                {% for x in object.author.all %}
+                    {{ x.name }}, {{ x.forename }} </br>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Institution</th>
+            <td>
+                {% for x in object.institution.all %}
+                    {{ x.name }} </br>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Analoges Datum</th>
+            <td>{{ object.date_analogue }}</td>
+        </tr>
+        <tr>
+            <th>Anmerkung</th>
+            <td>{{ object.note }}</td>
+        </tr>
+        <tr>
+            <th>Inhalt</th>
+            <td>{{ object.content }}</td>
+        </tr>
+        <tr>
+            <th>Gruppe</th>
+            <td>{{ object.topic_group }}</td>
+        </tr>
+        <tr>
+            <th>Kombination</th>
+            <td>{{ object.combination }}</td>
+        </tr>
+        <tr>
+            <th>Fundnummer in FDB</th>
+            <td>{{ object.location_id }}</td>
+        </tr>
+
+        <tr>
+            <th>Standort analog</th>
+            <td>{{ object.location_analogue }}</td>
+        </tr>
+        <tr>
+            <th>Ergänzungen</th>
+            <td>{{ object.amendments }}</td>
+        </tr>
+    </table>
+
+    <legend>Process of Digitization</legend>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th class="col-sm-3">Bearbeiter Digitalisierung</th>
+            <td>{{ object.curator.name }}, {{ object.curator.forename }}</td>
+        </tr>
+        <tr>
+            <th>Ort der Digitalisierung</th>
+            <td>{{ object.place_digizization }}</td>
+        </tr>
+        <tr>
+            <th>Datum der Digitalisierung</th>
+            <td>{{ object.date_digitization }}</td>
+        </tr>
+    </table>
+
+    <legend>Digitzied Object</legend>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th class="col-sm-3">Dateipfad</th>
+            <td>{{ object.path }}</td>
+        </tr>
+        <tr>
+            <th>Dateigröße KB</th>
+            <td>{{ object.filesize }}</td>
+        </tr>
+
+        <tr>
+            <th>Aufbewahrung Datei</th>
+            <td>{{ object.location_digitized_object }}</td>
+        </tr>
+        <tr>
+            <th>Speicherformat</th>
+            <td>{{ object.digital_format }}</td>
+        </tr>
+    </table>
+
+
+    <legend>KG/Areal: {{object.place}}</legend>
+        {% if object.place.lat %}
+            <div id="map"></div><br/>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <a class="btn btn-primary" href="{% url 'documents:document_update' pk=object.pk %}" role="button">edit document</a>
+            <a class ="btn btn-danger" href="{% url 'documents:document_delete' pk=object.id %}">delete</a>
+
+        {% endif %}
+{% endblock %}
+{% block scripts2 %}
+    <script type="text/javascript">
+
+        var gps1 = {{ object.place.lat }};
+        var gps2 = {{ object.place.lng }};
+        var map = L.map('map').setView([gps1, gps2], 6);
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.light',
+            accessToken: 'pk.eyJ1Ijoic2VubmllcmVyIiwiYSI6ImNpbHk1YWV0bDAwZnB2dW01d2l1Y3phdmkifQ.OljQLEhqeAygai2y6VoSwQ'
+            }).addTo(map);
+
+        L.marker([gps1 , gps2]).addTo(map)
+        .bindPopup('<a href="#">{{ object.place.name }}</a>')
+        .openPopup();
+
+    </script>
+{% endblock scripts2 %}
