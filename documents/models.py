@@ -8,6 +8,7 @@ from bib.models import Book
 
 class Document(IdProvider):
     legacy_id = models.CharField(max_length=300, blank=True, verbose_name='ID')
+    path = models.CharField(max_length=300, blank=True, verbose_name="Dateipfad")
     filename = models.CharField(max_length=300, blank=True, verbose_name="Dateiname")
     entry_order = models.CharField(
         max_length=300, blank=True, verbose_name="Ordnungskriterium/Eingabe"
@@ -55,8 +56,23 @@ class Document(IdProvider):
         verbose_name="Ort der Digitalisierung"
     )
     reference = models.ManyToManyField(Book, blank=True, verbose_name="Literaturzitate")
-    path = models.CharField(max_length=300, blank=True, verbose_name="Dateipfad")
     amendments = models.TextField(blank=True, verbose_name="Ergänzungen")
+
+    @classmethod
+    def get_listview_url(self):
+        return reverse('browsing:browse_documents')
+
+    def get_next(self):
+        next = Document.objects.filter(id__gt=self.id)
+        if next:
+            return next.first().id
+        return False
+
+    def get_prev(self):
+        prev = Document.objects.filter(id__lt=self.id).order_by('-id')
+        if prev:
+            return prev.first().id
+        return False
 
     def __str__(self):
         return "{}".format(self.filename)

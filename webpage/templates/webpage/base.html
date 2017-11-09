@@ -92,6 +92,7 @@
                         {% endif %}
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'browsing:browse_places' %}">Places</a></li>
+                            <li><a href="{% url 'browsing:browse_documents' %}">Documents</a></li>
                             {% if user.is_authenticated %}
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{% url 'places:place_list' %}">Edit Places</a></li>

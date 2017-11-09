@@ -1,6 +1,7 @@
 import django_filters
 from dal import autocomplete
 from places.models import Place, AlternativeName
+from documents.models import Document
 
 django_filters.filters.LOOKUP_TYPES = [
     ('', '---------'),
@@ -17,6 +18,20 @@ django_filters.filters.LOOKUP_TYPES = [
     ('icontains', 'Contains (case insensitive)'),
     ('not_contains', 'Does not contain'),
 ]
+
+
+class DocumentListFilter(django_filters.FilterSet):
+    filename = django_filters.CharFilter(
+        lookup_expr='icontains',
+        help_text=Document._meta.get_field('filename').help_text,
+        label=Document._meta.get_field('filename').verbose_name
+        )
+
+    class Meta:
+        model = Document
+        fields = [
+            'id', 'filename'
+        ]
 
 
 class PlaceListFilter(django_filters.FilterSet):

@@ -3,13 +3,48 @@ import re
 import json
 from django.shortcuts import (render, render_to_response, get_object_or_404, redirect)
 from django.views import generic
-from django.views.generic.edit import DeleteView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .models import Place
-from .forms import PlaceForm, PlaceFormCreate
+from .models import Place, AlternativeName
+from .forms import PlaceForm, PlaceFormCreate, AlternativeNameForm
+
+
+class AlternativeNameListView(generic.ListView):
+    # template_name = "places/list_alternativenames.html"
+    context_object_name = 'object_list'
+
+    def get_queryset(self):
+        return AlternativeName.objects.all()
+
+
+class AlternativeNameCreate(CreateView):
+
+    model = AlternativeName
+    form_class = AlternativeNameForm
+    template_name = 'places/alternativenames_create.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AlternativeNameCreate, self).dispatch(*args, **kwargs)
+
+
+class AlternativeNameUpdate(UpdateView):
+
+    model = AlternativeName
+    form_class = AlternativeNameForm
+    template_name = 'places/alternativenames_create.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AlternativeNameUpdate, self).dispatch(*args, **kwargs)
+
+
+class AlternativeNameDetailView(DetailView):
+    model = AlternativeName
+    template_name = 'places/alternativenames_detail.html'
 
 
 class PlaceDetailView(DetailView):
