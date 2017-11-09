@@ -2,12 +2,12 @@
 # (by default) in the base.html and index.html
 
 PROJECT_METADATA = {
-    'title': 'Django Base Project',
+    'title': 'Thunau',
     'author': 'Peter Andorfer',
-    'subtitle': 'A django project to bootstrap further web-app developments',
-    'description': 'This django projects includes some generic applications (webpage, vocabs, places, bib)',
+    'subtitle': 'An Exavation Docu',
+    'description': 'A web application to manage and publish data gathered around the excavations in Thunau',
     'github': 'https://github.com/acdh-oeaw/thunau',
-    'purpose_de': 'Ziel von Django Base Project ist die Schaffung einer einheitlichen und generischen Grundlage für Web Applikationen.',
-    'purpose_en': 'The purpose of Django Base Project is to bootstrap web developments.',
-    'version': '1.1.0'
+    'purpose_de': 'Ziel ist die Publikation von Forschungsdaten',
+    'purpose_en': 'The purpose of this project is the publication of research data',
+    'version': '0.1'
 }
