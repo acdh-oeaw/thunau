@@ -170,8 +170,8 @@
 {% block scripts2 %}
     <script type="text/javascript">
 
-        var gps1 = {{ object.place.lat }};
-        var gps2 = {{ object.place.lng }};
+        var gps1 = {{ object.place_of_origin.lat }};
+        var gps2 = {{ object.place_of_origin.lng }};
         var map = L.map('map').setView([gps1, gps2], 6);
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -182,7 +182,7 @@
             }).addTo(map);
 
         L.marker([gps1 , gps2]).addTo(map)
-        .bindPopup('<a href="#">{{ object.place.name }}</a>')
+        .bindPopup('<a href="#">{{ object.place_of_origin.name }}</a>')
         .openPopup();
 
     </script>
