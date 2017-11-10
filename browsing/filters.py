@@ -1,6 +1,6 @@
 import django_filters
 from dal import autocomplete
-from places.models import Place, AlternativeName
+from places.models import Place, AlternativeName, Institution
 from documents.models import Document
 
 django_filters.filters.LOOKUP_TYPES = [
@@ -18,6 +18,35 @@ django_filters.filters.LOOKUP_TYPES = [
     ('icontains', 'Contains (case insensitive)'),
     ('not_contains', 'Does not contain'),
 ]
+
+
+class InstitutionListFilter(django_filters.FilterSet):
+    written_name = django_filters.CharFilter(
+        lookup_expr='icontains',
+        help_text=Institution._meta.get_field('written_name').help_text,
+        label=Institution._meta.get_field('written_name').verbose_name
+        )
+    alt_names = django_filters.CharFilter(
+        lookup_expr='icontains',
+        help_text=Institution._meta.get_field('alt_names').help_text,
+        label=Institution._meta.get_field('alt_names').verbose_name
+        )
+    authority_url = django_filters.CharFilter(
+        lookup_expr='icontains',
+        help_text=Institution._meta.get_field('authority_url').help_text,
+        label=Institution._meta.get_field('authority_url').verbose_name
+        )
+    location = django_filters.ModelMultipleChoiceFilter(
+        queryset=AlternativeName.objects.all(),
+        help_text=Institution._meta.get_field('location').help_text,
+        label=Institution._meta.get_field('location').verbose_name
+        )
+
+    class Meta:
+        model = Institution
+        fields = [
+            'id', 'written_name', 'authority_url', 'location'
+        ]
 
 
 class DocumentListFilter(django_filters.FilterSet):

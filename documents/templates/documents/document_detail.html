@@ -76,7 +76,7 @@
                 <th>Institution</th>
                 <td>
                     {% for x in object.institution.all %}
-                        {{ x }} </br>
+                        <a href="{{ x.get_absolute_url }}">{{ x }}</a></br>
                     {% endfor %}
                 </td>
             </tr>
@@ -123,7 +123,9 @@
             </tr>
             <tr>
                 <th>Ort der Digitalisierung</th>
-                <td>{{ object.place_digizization }}</td>
+                <td>
+                    <a href="{{ object.place_digizization.get_absolute_url }}">{{ object.place_digizization }}</a>
+                </td>
             </tr>
             <tr>
                 <th>Datum der Digitalisierung</th>

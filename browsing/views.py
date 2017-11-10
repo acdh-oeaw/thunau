@@ -2,7 +2,7 @@ from django_tables2 import SingleTableView, RequestConfig
 from .filters import *
 from .forms import *
 from .tables import *
-from places.models import Place
+from places.models import Place, Institution
 from documents.models import Document
 
 
@@ -36,12 +36,42 @@ class GenericListView(SingleTableView):
         return context
 
 
+class InstitutionListView(GenericListView):
+    model = Institution
+    table_class = InstitutionTable
+    filter_class = InstitutionListFilter
+    formhelper_class = InstitutionFilterFormHelper
+    init_columns = ['id', 'written_name']
+
+    def get_all_cols(self):
+        all_cols = list(self.table_class.base_columns.keys())
+        return all_cols
+
+    def get_context_data(self, **kwargs):
+        context = super(InstitutionListView, self).get_context_data()
+        context[self.context_filter_name] = self.filter
+        togglable_colums = [x for x in self.get_all_cols() if x not in self.init_columns]
+        context['togglable_colums'] = togglable_colums
+        return context
+
+    def get_table(self, **kwargs):
+        table = super(GenericListView, self).get_table()
+        RequestConfig(self.request, paginate={
+            'page': 1, 'per_page': self.paginate_by}).configure(table)
+        default_cols = self.init_columns
+        all_cols = self.get_all_cols()
+        selected_cols = self.request.GET.getlist("columns") + default_cols
+        exclude_vals = [x for x in all_cols if x not in selected_cols]
+        table.exclude = exclude_vals
+        return table
+
+
 class PlaceListView(GenericListView):
     model = Place
     table_class = PlaceTable
     filter_class = PlaceListFilter
     formhelper_class = PlaceFilterFormHelper
-    init_columns = ['id', 'name', 'part_of']
+    init_columns = ['id', 'name', 'lat', 'lng']
 
     def get_all_cols(self):
         all_cols = list(self.table_class.base_columns.keys())
@@ -71,7 +101,7 @@ class DocumentListView(GenericListView):
     table_class = DocumentTable
     filter_class = DocumentListFilter
     formhelper_class = DocumentFilterFormHelper
-    init_columns = ['id', 'filename']
+    init_columns = ['id', 'filename', 'medium', 'place_of_origin']
 
     def get_all_cols(self):
         all_cols = list(self.table_class.base_columns.keys())

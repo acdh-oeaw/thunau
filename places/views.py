@@ -8,8 +8,13 @@ from django.views.generic.detail import DetailView
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .models import Place, AlternativeName
+from .models import Place, AlternativeName, Institution
 from .forms import PlaceForm, PlaceFormCreate, AlternativeNameForm
+
+
+class InstitutionDetailView(DetailView):
+    model = Institution
+    template_name = 'places/institution_detail.html'
 
 
 class AlternativeNameListView(generic.ListView):

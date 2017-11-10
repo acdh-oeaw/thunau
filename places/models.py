@@ -67,7 +67,7 @@ class Place(IdProvider):
 
     @classmethod
     def get_listview_url(self):
-        return reverse('places:place_list')
+        return reverse('browsing:browse_places')
 
     def get_next(self):
         next = Place.objects.filter(id__gt=self.id)
@@ -82,7 +82,7 @@ class Place(IdProvider):
         return False
 
     def get_absolute_url(self):
-        return reverse('place:place_detail', kwargs={'pk': self.id})
+        return reverse('places:place_detail', kwargs={'pk': self.id})
 
     def __str__(self):
         return "{}".format(self.name)
@@ -97,6 +97,13 @@ class Institution(IdProvider):
     location = models.ForeignKey(Place, blank=True, null=True)
     parent_institution = models.ForeignKey('Institution', blank=True, null=True)
     comment = models.TextField(blank=True)
+
+    @classmethod
+    def get_listview_url(self):
+        return reverse('browsing:browse_institutions')
+
+    def get_absolute_url(self):
+        return reverse('places:institution_detail', kwargs={'pk': self.id})
 
     def get_next(self):
         next = Institution.objects.filter(id__gt=self.id)

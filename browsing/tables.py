@@ -4,6 +4,19 @@ from places.models import *
 from documents.models import Document
 
 
+class InstitutionTable(tables.Table):
+    written_name = tables.LinkColumn(
+        'places:institution_detail',
+        args=[A('pk')], verbose_name='Name'
+    )
+    location = tables.Column()
+
+    class Meta:
+        model = Institution
+        sequence = ('id', 'written_name',)
+        attrs = {"class": "table table-responsive table-hover"}
+
+
 class PlaceTable(tables.Table):
     name = tables.LinkColumn(
         'places:place_detail',

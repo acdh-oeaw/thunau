@@ -13,5 +13,7 @@ urlpatterns = [
     url(r'^create/$', views.create_place, name='place_create'),
     url(r'^detail/(?P<pk>[0-9]+)$', views.PlaceDetailView.as_view(), name='place_detail'),
     url(r'^edit/(?P<pk>[0-9]+)$', views.edit_place, name='place_edit'),
-    url(r'^delete/(?P<pk>[0-9]+)$', views.PlaceDelete.as_view(), name='place_delete')
+    url(r'^delete/(?P<pk>[0-9]+)$', views.PlaceDelete.as_view(), name='place_delete'),
+    url(r'^institutions/detail/(?P<pk>[0-9]+)$', views.InstitutionDetailView.as_view(),
+        name='institution_detail'),
 ]
