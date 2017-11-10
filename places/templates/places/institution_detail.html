@@ -31,7 +31,7 @@ include 'autocomplete_light/static.html
                     <h1 style="text-align: center;">
                         <small>institution:</small> {{ object }}
                         {% if user.is_authenticated %}
-                        <small><a href="#">
+                        <small><a href="{% url 'places:institution_edit' pk=object.id %}">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true" title="edit"></span>
                         </a>
                     </small>
@@ -76,22 +76,43 @@ include 'autocomplete_light/static.html
                             {{ object.alt_names }}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            parent_institution
-                        </th>
-                        <td>
-                            {{ object.alt_names }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            parent_institution
-                        </th>
-                        <td>
-                            {{ object.location }}
-                        </td>
-                    </tr>
+                    {% if object.parent_institution %}
+                        <tr>
+                            <th>
+                                parent_institution
+                            </th>
+                            <td>
+                                <a href="{{ object.parent_institution.get_absolute_url }}">{{ object.parent_institution }}</a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if object.children_institutions.all %}
+                        <tr>
+                            <th>
+                                children_institutions
+                            </th>
+                            <td>
+                                <ul>
+                                    {% for x in object.children_institutions.all %}
+                                        <li>
+                                            <a href="{{ x.get_absolute_url }}">{{ x }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if object.location %}
+                        <tr>
+                            <th>
+                                location
+                            </th>
+                            <td>
+                                <a href="{{ object.location.get_absolute_url }}">{{ object.location }}</a>
+                            </td>
+                        </tr>
+                    {% endif %}
                 </table>
                 <legend>Related Documents</legend>
                 <ul>
@@ -100,6 +121,15 @@ include 'autocomplete_light/static.html
                         <a href="{{ x.get_absolute_url }}">{{ x }}</a>
                     </li>
                     {% endfor %}
+                    {% if object.children_institutions.all %}
+                        {% for x in object.children_institutions.all %}
+                            {% for y in x.institution_document.all %}
+                                <li>
+                                    <a href="{{ y.get_absolute_url }}">{{ y }}</a>
+                                </li>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
                 </ul>
             </div>
             <div class="col-md-6">

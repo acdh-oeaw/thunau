@@ -16,4 +16,8 @@ urlpatterns = [
     url(r'^delete/(?P<pk>[0-9]+)$', views.PlaceDelete.as_view(), name='place_delete'),
     url(r'^institutions/detail/(?P<pk>[0-9]+)$', views.InstitutionDetailView.as_view(),
         name='institution_detail'),
+    url(r'^institutions/edit/(?P<pk>[0-9]+)$', views.InstitutionUpdate.as_view(),
+        name='institution_edit'),
+    url(r'^institutions/create/$', views.InstitutionCreate.as_view(),
+        name='institution_create'),
 ]

@@ -95,7 +95,8 @@ class Institution(IdProvider):
     alt_names = models.CharField(max_length=300, blank=True)
     abbreviation = models.CharField(max_length=300, blank=True)
     location = models.ForeignKey(Place, blank=True, null=True)
-    parent_institution = models.ForeignKey('Institution', blank=True, null=True)
+    parent_institution = models.ForeignKey(
+        'Institution', blank=True, null=True, related_name='children_institutions')
     comment = models.TextField(blank=True)
 
     @classmethod
