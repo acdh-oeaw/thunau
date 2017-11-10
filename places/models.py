@@ -1,3 +1,4 @@
+import re
 from django.db import models
 from django.core.urlresolvers import reverse
 from idprovider.models import IdProvider
@@ -65,6 +66,19 @@ class Place(IdProvider):
     )
     place_type = models.CharField(choices=PLACE_TYPES, null=True, blank=True, max_length=50)
 
+    def get_geonames_url(self):
+        if self.geonames_id.startswith('ht') and self.geonames_id.endswith('.html'):
+            return self.geonames_id
+        else:
+            return "http://www.geonames.org/{}".format(self.geonames_id)
+
+    def get_geonames_rdf(self):
+        try:
+            number = re.findall(r'\d+', str(self.geonames_id))[0]
+            return None
+        except:
+            return None
+
     @classmethod
     def get_listview_url(self):
         return reverse('browsing:browse_places')
@@ -98,6 +112,10 @@ class Institution(IdProvider):
     parent_institution = models.ForeignKey(
         'Institution', blank=True, null=True, related_name='children_institutions')
     comment = models.TextField(blank=True)
+
+    @classmethod
+    def get_arche_dump(self):
+        return reverse('browsing:rdf_institutions')
 
     @classmethod
     def get_listview_url(self):
