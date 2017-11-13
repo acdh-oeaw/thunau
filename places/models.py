@@ -151,9 +151,14 @@ class Person(IdProvider):
     name = models.CharField(max_length=300, blank=True)
     acad_title = models.CharField(max_length=300, blank=True)
     alt_names = models.CharField(max_length=300, blank=True)
-    belongs_to_institution = models.ForeignKey(Institution, blank=True, null=True)
+    belongs_to_institution = models.ForeignKey(
+        Institution, blank=True, null=True, related_name="has_member"
+    )
     authority_url = models.CharField(max_length=300, blank=True)
     comment = models.TextField(blank=True)
+
+    def get_absolute_url(self):
+        return reverse('places:person_detail', kwargs={'pk': self.id})
 
     def get_next(self):
         next = Person.objects.filter(id__gt=self.id)

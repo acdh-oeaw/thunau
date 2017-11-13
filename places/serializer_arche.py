@@ -36,7 +36,6 @@ def place_to_arche(itmes):
                     subject, GEONAMES.parentFeature,
                     URIRef('/'.join([base_url, 'place', str(obj.part_of.id)]))
                 ))
-
     return g
 
 
@@ -61,13 +60,37 @@ def inst_to_arche(insitutions):
                 ]))
             ))
         if obj.location:
-            g.add((inst, ARCHE.hasCity, Literal(obj.location.name)))
-            if obj.location.geonames_id:
-                pl = URIRef(obj.location.get_geonames_url())
-                g.add((inst, ARCHE.hasSpatialCoverage, URIRef(pl)))
-                g.add((pl, ARCHE.hasTitle, Literal(obj.location.name)))
-                g.add((pl, ARCHE.hasLongitude, Literal(obj.location.lng)))
-                g.add((pl, ARCHE.hasLatitude, Literal(obj.location.lat)))
+            pl = URIRef('/'.join([base_url, 'place', str(obj.location.id)]))
+            loc_g = place_to_arche([obj.location])
+            g = g + loc_g
+            g.add((inst, ARCHE.hasSpatialCoverage, URIRef(pl)))
         if obj.authority_url:
             g.add((inst, ARCHE.hasIdentifier, URIRef(obj.authority_url)))
     return g
+
+
+# def person_to_arche(itmes):
+#
+#     """takes queryset of Place objects and returns a ARCHE rdflib.Graph"""
+#
+#     g = rdflib.Graph()
+#     for obj in itmes:
+#         subject = URIRef('/'.join([base_url, 'person', str(obj.id)]))
+#         if obj.name:
+#             g.add((subject, ARCHE.hasTitle, Literal(obj.written_name)))
+#         if obj.alternative_name:
+#             for x in obj.alternative_name.all():
+#                 if x.name:
+#                     g.add((subject, ARCHE.hasAlternativeTitle, Literal(x.name)))
+#         if obj.geonames_id:
+#             g.add((subject, ARCHE.hasIdentifier, URIRef(obj.get_geonames_url())))
+#         if obj.lat:
+#             g.add((subject, ARCHE.hasLongitude, Literal(obj.lng)))
+#             g.add((subject, ARCHE.hasLatitude, Literal(obj.lat)))
+#         if obj.part_of:
+#             if obj.part_of.geonames_id:
+#                 g.add((
+#                     subject, GEONAMES.parentFeature,
+#                     URIRef('/'.join([base_url, 'place', str(obj.part_of.id)]))
+#                 ))
+#     return g

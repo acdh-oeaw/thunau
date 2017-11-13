@@ -20,4 +20,6 @@ urlpatterns = [
         name='institution_edit'),
     url(r'^institutions/create/$', views.InstitutionCreate.as_view(),
         name='institution_create'),
+    url(r'^persons/detail/(?P<pk>[0-9]+)$', views.PersonDetailView.as_view(),
+        name='person_detail'),
 ]
