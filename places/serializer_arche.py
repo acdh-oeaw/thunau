@@ -12,6 +12,37 @@ GEONAMES = Namespace('http://www.geonames.org/ontology#')
 base_url = "https://id.acdh.oeaw.ac.at/{}".format(project_name)
 
 
+def person_to_arche(itmes):
+
+    """takes queryset of Person objects and returns a ARCHE rdflib.Graph"""
+
+    g = rdflib.Graph()
+    for obj in itmes:
+        subject = URIRef('/'.join([base_url, 'person', str(obj.id)]))
+        if obj.written_name:
+            g.add((subject, ARCHE.hasAlternativeTitle, Literal(obj.written_name)))
+        if obj.name:
+            g.add((subject, ARCHE.hasLastName, Literal(obj.name)))
+        if obj.forename:
+            g.add((subject, ARCHE.hasFirstName, Literal(obj.forename)))
+        # if obj.alternative_name:
+        #     for x in obj.alternative_name.all():
+        #         if x.name:
+        #             g.add((subject, ARCHE.hasAlternativeTitle, Literal(x.name)))
+        # if obj.geonames_id:
+        #     g.add((subject, ARCHE.hasIdentifier, URIRef(obj.get_geonames_url())))
+        # if obj.lat:
+        #     g.add((subject, ARCHE.hasLongitude, Literal(obj.lng)))
+        #     g.add((subject, ARCHE.hasLatitude, Literal(obj.lat)))
+        # if obj.part_of:
+        #     if obj.part_of.geonames_id:
+        #         g.add((
+        #             subject, GEONAMES.parentFeature,
+        #             URIRef('/'.join([base_url, 'place', str(obj.part_of.id)]))
+        #         ))
+    return g
+
+
 def place_to_arche(itmes):
 
     """takes queryset of Place objects and returns a ARCHE rdflib.Graph"""

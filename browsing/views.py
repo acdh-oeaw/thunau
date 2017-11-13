@@ -41,7 +41,29 @@ class GenericListView(SingleTableView):
             context['class_name'] = "{}".format(self.model.__name__)
         else:
             context['class_name'] = "{}s".format(self.model.__name__)
+        try:
+            context['get_arche_dump'] = self.model.get_arche_dump()
+        except AttributeError:
+            context['get_arche_dump'] = None
         return context
+
+
+class PersonRDFView(GenericListView):
+    model = Person
+    table_class = PersonTable
+    template_name = 'browsing/rdflib_template.txt'
+    filter_class = PersonListFilter
+    formhelper_class = GenericFilterFormHelper
+
+    def render_to_response(self, context):
+        timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
+        response = HttpResponse(content_type='application/xml; charset=utf-8')
+        filename = "places_{}".format(timestamp)
+        response['Content-Disposition'] = 'attachment; filename="{}.rdf"'.format(filename)
+        g = person_to_arche(self.get_queryset())
+        get_format = self.request.GET.get('format', default='n3')
+        result = g.serialize(destination=response, format=get_format)
+        return response
 
 
 class PlaceRDFView(GenericListView):

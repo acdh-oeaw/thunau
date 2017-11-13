@@ -161,6 +161,10 @@ class Person(IdProvider):
     def get_listview_url(self):
         return reverse('browsing:browse_persons')
 
+    @classmethod
+    def get_arche_dump(self):
+        return reverse('browsing:rdf_persons')
+
     def get_absolute_url(self):
         return reverse('places:person_detail', kwargs={'pk': self.id})
 
