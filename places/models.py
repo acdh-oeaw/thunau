@@ -83,6 +83,10 @@ class Place(IdProvider):
     def get_listview_url(self):
         return reverse('browsing:browse_places')
 
+    @classmethod
+    def get_arche_dump(self):
+        return reverse('browsing:rdf_places')
+
     def get_next(self):
         next = Place.objects.filter(id__gt=self.id)
         if next:

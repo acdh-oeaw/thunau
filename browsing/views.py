@@ -10,7 +10,7 @@ from .filters import *
 from .forms import *
 from .tables import *
 from places.models import Place, Institution
-from places.serializer_arche import inst_to_arche
+from places.serializer_arche import *
 from documents.models import Document
 
 
@@ -46,6 +46,24 @@ class GenericListView(SingleTableView):
         except AttributeError:
             context['get_arche_dump'] = None
         return context
+
+
+class PlaceRDFView(GenericListView):
+    model = Place
+    table_class = PlaceTable
+    template_name = 'browsing/rdflib_template.txt'
+    filter_class = PlaceListFilter
+    formhelper_class = GenericFilterFormHelper
+
+    def render_to_response(self, context):
+        timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
+        response = HttpResponse(content_type='application/xml; charset=utf-8')
+        filename = "places_{}".format(timestamp)
+        response['Content-Disposition'] = 'attachment; filename="{}.rdf"'.format(filename)
+        g = place_to_arche(self.get_queryset())
+        get_format = self.request.GET.get('format', default='n3')
+        result = g.serialize(destination=response, format=get_format)
+        return response
 
 
 class InstitutionRDFView(GenericListView):
