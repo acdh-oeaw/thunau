@@ -4,6 +4,23 @@ from places.models import *
 from documents.models import Document
 
 
+class PersonTable(tables.Table):
+    id = tables.LinkColumn(
+        'places:person_detail',
+        args=[A('pk')], verbose_name='ID'
+    )
+    name = tables.LinkColumn(
+        'places:person_detail',
+        args=[A('pk')], verbose_name='Name'
+    )
+    forename = tables.Column()
+
+    class Meta:
+        model = Person
+        sequence = ('id', 'written_name',)
+        attrs = {"class": "table table-responsive table-hover"}
+
+
 class InstitutionTable(tables.Table):
     written_name = tables.LinkColumn(
         'places:institution_detail',

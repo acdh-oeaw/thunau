@@ -157,6 +157,10 @@ class Person(IdProvider):
     authority_url = models.CharField(max_length=300, blank=True)
     comment = models.TextField(blank=True)
 
+    @classmethod
+    def get_listview_url(self):
+        return reverse('browsing:browse_persons')
+
     def get_absolute_url(self):
         return reverse('places:person_detail', kwargs={'pk': self.id})
 

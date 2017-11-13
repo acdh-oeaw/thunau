@@ -68,7 +68,7 @@
                 <th>Autor</th>
                 <td>
                     {% for x in object.author.all %}
-                        {{ x }} </br>
+                        <a href="{{ x.get_absolute_url }}">{{ x }}</a> </br>
                     {% endfor %}
                 </td>
             </tr>

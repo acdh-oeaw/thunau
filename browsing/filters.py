@@ -1,6 +1,6 @@
 import django_filters
 from dal import autocomplete
-from places.models import Place, AlternativeName, Institution
+from places.models import Place, AlternativeName, Institution, Person
 from documents.models import Document
 
 django_filters.filters.LOOKUP_TYPES = [
@@ -18,6 +18,23 @@ django_filters.filters.LOOKUP_TYPES = [
     ('icontains', 'Contains (case insensitive)'),
     ('not_contains', 'Does not contain'),
 ]
+
+
+class PersonListFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(
+        lookup_expr='icontains',
+        help_text=Person._meta.get_field('name').help_text,
+        label=Person._meta.get_field('name').verbose_name
+        )
+    belongs_to_institution = django_filters.ModelMultipleChoiceFilter(
+        queryset=Institution.objects.all(),
+        help_text=Person._meta.get_field('belongs_to_institution').help_text,
+        label=Person._meta.get_field('belongs_to_institution').verbose_name
+        )
+
+    class Meta:
+        model = Person
+        fields = "__all__"
 
 
 class InstitutionListFilter(django_filters.FilterSet):
