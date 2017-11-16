@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'institutions/$', views.InstitutionListView.as_view(), name='browse_institutions'),
     url(r'institutions-rdf/$', views.InstitutionRDFView.as_view(), name='rdf_institutions'),
     url(r'documents/$', views.DocumentListView.as_view(), name='browse_documents'),
+    url(r'documents-rdf/$', views.DocumentRDFView.as_view(), name='rdf_documents'),
 ]

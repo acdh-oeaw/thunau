@@ -11,6 +11,7 @@ from .forms import *
 from .tables import *
 from places.models import Place, Institution
 from places.serializer_arche import *
+from documents.serializer_arche import document_to_arche
 from documents.models import Document
 
 
@@ -52,6 +53,24 @@ class GenericListView(SingleTableView):
         return context
 
 
+class DocumentRDFView(GenericListView):
+    model = Document
+    table_class = DocumentTable
+    template_name = 'browsing/rdflib_template.txt'
+    filter_class = DocumentListFilter
+    formhelper_class = GenericFilterFormHelper
+
+    def render_to_response(self, context):
+        timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
+        response = HttpResponse(content_type='application/xml; charset=utf-8')
+        filename = "{}_{}".format(self.model.__name__, timestamp)
+        response['Content-Disposition'] = 'attachment; filename="{}.rdf"'.format(filename)
+        g = document_to_arche(self.get_queryset())
+        get_format = self.request.GET.get('format', default='n3')
+        result = g.serialize(destination=response, format=get_format)
+        return response
+
+
 class PersonRDFView(GenericListView):
     model = Person
     table_class = PersonTable
@@ -62,7 +81,7 @@ class PersonRDFView(GenericListView):
     def render_to_response(self, context):
         timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
         response = HttpResponse(content_type='application/xml; charset=utf-8')
-        filename = "places_{}".format(timestamp)
+        filename = "{}_{}".format(self.model.__name__, timestamp)
         response['Content-Disposition'] = 'attachment; filename="{}.rdf"'.format(filename)
         g = person_to_arche(self.get_queryset())
         get_format = self.request.GET.get('format', default='n3')
@@ -80,7 +99,7 @@ class PlaceRDFView(GenericListView):
     def render_to_response(self, context):
         timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
         response = HttpResponse(content_type='application/xml; charset=utf-8')
-        filename = "places_{}".format(timestamp)
+        filename = "{}_{}".format(self.model.__name__, timestamp)
         response['Content-Disposition'] = 'attachment; filename="{}.rdf"'.format(filename)
         g = place_to_arche(self.get_queryset())
         get_format = self.request.GET.get('format', default='n3')
@@ -98,7 +117,7 @@ class InstitutionRDFView(GenericListView):
     def render_to_response(self, context):
         timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
         response = HttpResponse(content_type='application/xml; charset=utf-8')
-        filename = "institutions_{}".format(timestamp)
+        filename = "{}_{}".format(self.model.__name__, timestamp)
         response['Content-Disposition'] = 'attachment; filename="{}.rdf"'.format(filename)
         g = inst_to_arche(self.get_queryset())
         get_format = self.request.GET.get('format', default='n3')

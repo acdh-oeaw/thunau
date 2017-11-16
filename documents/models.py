@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from django.core.urlresolvers import reverse
 from vocabs.models import SkosConcept
@@ -58,9 +59,28 @@ class Document(IdProvider):
     reference = models.ManyToManyField(Book, blank=True, verbose_name="Literaturzitate")
     amendments = models.TextField(blank=True, verbose_name="Ergänzungen")
 
+    def get_file_name(self):
+        if self.filename and self.digital_format.pref_label:
+            return ".".join([self.filename, self.digital_format.pref_label.lower()])
+        else:
+            return None
+
+    def get_file_location(self):
+        if self.path and self.get_file_name():
+            file_loc = os.path.join(
+                self.path.replace('_', '\\'), self.get_file_name()
+            )
+            return file_loc
+        else:
+            return None
+
     @classmethod
     def get_listview_url(self):
         return reverse('browsing:browse_documents')
+
+    @classmethod
+    def get_arche_dump(self):
+        return reverse('browsing:rdf_documents')
 
     def get_next(self):
         next = Document.objects.filter(id__gt=self.id)
