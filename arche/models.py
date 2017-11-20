@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 from places.models import Person, Institution
 
 
@@ -32,6 +33,29 @@ class Collection(RepoObject):
 
     def __str__(self):
         return "{}".format(self.has_title)
+
+    def get_absolute_url(self):
+        return reverse('arche:collection_detail', kwargs={'pk': self.id})
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse('arche:collection_create')
+
+    @classmethod
+    def get_listview_url(self):
+        return reverse('arche:browse_collections')
+
+    def get_next(self):
+        next = Collection.objects.filter(id__gt=self.id)
+        if next:
+            return next.first().id
+        return False
+
+    def get_prev(self):
+        prev = Collection.objects.filter(id__lt=self.id).order_by('-id')
+        if prev:
+            return prev.first().id
+        return False
 
 
 class Project(RepoObject):
@@ -68,3 +92,29 @@ class Project(RepoObject):
 
     def __str__(self):
         return "{}".format(self.has_title)
+
+        def get_absolute_url(self):
+            return reverse('arche:project_detail', kwargs={'pk': self.id})
+
+    def get_absolute_url(self):
+        return reverse('arche:project_detail', kwargs={'pk': self.id})
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse('arche:project_create')
+
+    @classmethod
+    def get_listview_url(self):
+        return reverse('arche:browse_projects')
+
+    def get_next(self):
+        next = Project.objects.filter(id__gt=self.id)
+        if next:
+            return next.first().id
+        return False
+
+    def get_prev(self):
+        prev = Project.objects.filter(id__lt=self.id).order_by('-id')
+        if prev:
+            return prev.first().id
+        return False
