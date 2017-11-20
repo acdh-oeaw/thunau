@@ -60,7 +60,7 @@ class Collection(RepoObject):
 
 class Project(RepoObject):
     has_principal = models.ManyToManyField(
-        Person, blank=True, verbose_name="acdh:hasContributor",
+        Person, blank=True, verbose_name="acdh:hasPrincipalInvestigator",
         help_text="Person officially designated as head of project team or subproject \
         team instrumental in the work necessary to development of the resource.",
         related_name="is_principal"
