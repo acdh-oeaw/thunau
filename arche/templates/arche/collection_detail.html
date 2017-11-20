@@ -63,6 +63,22 @@
                             </td>
                         </tr>
                     </table>
+
+                    <legend>Related Person</legend>
+                    <table class="table table-bordered table-hover">
+                        {% if object.has_contributor.all %}
+                            <tr>
+                                <th>
+                                    acdh:hasContributor
+                                </th>
+                                <td>
+                                    {% for x in object.has_contributor.all %}
+                                        <a href="{{ x.get_absolute_url }}">{{ x }}</a><br/>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </table>
                 </div>
                 <div class="col-md-6">
                     {% if object.has_related_project.all %}

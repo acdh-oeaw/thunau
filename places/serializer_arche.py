@@ -21,6 +21,7 @@ def place_to_arche(itmes):
     g = rdflib.Graph()
     for obj in itmes:
         subject = URIRef('/'.join([base_url, 'place', str(obj.id)]))
+        g.add((subject, RDF.type, ARCHE.Place))
         if obj.name:
             g.add((subject, ARCHE.hasTitle, Literal(obj.name)))
         if obj.alternative_name:
@@ -48,6 +49,7 @@ def inst_to_arche(insitutions):
     g = rdflib.Graph()
     for obj in insitutions:
         inst = URIRef('/'.join([base_url, 'institution', str(obj.id)]))
+        g.add((inst, RDF.type, ARCHE.Organisation))
         if obj.written_name:
             g.add((inst, ARCHE.hasTitle, Literal(obj.written_name)))
         if obj.alt_names:
@@ -78,6 +80,7 @@ def person_to_arche(itmes):
     g = rdflib.Graph()
     for obj in itmes:
         subject = URIRef('/'.join([base_url, 'person', str(obj.id)]))
+        g.add((subject, RDF.type, ARCHE.Person))
         if obj.written_name:
             g.add((subject, ARCHE.hasAlternativeTitle, Literal(obj.written_name)))
         if obj.name:

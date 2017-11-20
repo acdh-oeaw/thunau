@@ -1,3 +1,7 @@
+import time
+import datetime
+from django.http import HttpResponse
+import rdflib
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -9,7 +13,9 @@ from .models import Project, Collection
 from .forms import ProjectForm, ProjectFilterFormHelper, CollectionForm, CollectionFilterFormHelper
 from .filters import ProjectListFilter, CollectionListFilter
 from .tables import ProjectTable, CollectionTable
+from .serializer_arche import collection_to_arche, project_to_arche
 from browsing.views import GenericListView
+from browsing.forms import GenericFilterFormHelper
 
 
 class ProjectListView(GenericListView):
@@ -40,6 +46,24 @@ class ProjectListView(GenericListView):
         exclude_vals = [x for x in all_cols if x not in selected_cols]
         table.exclude = exclude_vals
         return table
+
+
+class ProjectRDFView(GenericListView):
+    model = Project
+    table_class = ProjectTable
+    template_name = 'browsing/rdflib_template.txt'
+    filter_class = ProjectListFilter
+    formhelper_class = GenericFilterFormHelper
+
+    def render_to_response(self, context):
+        timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
+        response = HttpResponse(content_type='application/xml; charset=utf-8')
+        filename = "{}_{}".format(self.model.__name__, timestamp)
+        response['Content-Disposition'] = 'attachment; filename="{}.rdf"'.format(filename)
+        g = project_to_arche(self.get_queryset())
+        get_format = self.request.GET.get('format', default='n3')
+        result = g.serialize(destination=response, format=get_format)
+        return response
 
 
 class ProjectDetailView(DetailView):
@@ -107,6 +131,24 @@ class CollectionListView(GenericListView):
         exclude_vals = [x for x in all_cols if x not in selected_cols]
         table.exclude = exclude_vals
         return table
+
+
+class CollectionRDFView(GenericListView):
+    model = Collection
+    table_class = CollectionTable
+    template_name = 'browsing/rdflib_template.txt'
+    filter_class = CollectionListFilter
+    formhelper_class = GenericFilterFormHelper
+
+    def render_to_response(self, context):
+        timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d-%H-%M-%S')
+        response = HttpResponse(content_type='application/xml; charset=utf-8')
+        filename = "{}_{}".format(self.model.__name__, timestamp)
+        response['Content-Disposition'] = 'attachment; filename="{}.rdf"'.format(filename)
+        g = collection_to_arche(self.get_queryset())
+        get_format = self.request.GET.get('format', default='n3')
+        result = g.serialize(destination=response, format=get_format)
+        return response
 
 
 class CollectionDetailView(DetailView):

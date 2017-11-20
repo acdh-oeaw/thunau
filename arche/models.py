@@ -45,6 +45,10 @@ class Collection(RepoObject):
     def get_listview_url(self):
         return reverse('arche:browse_collections')
 
+    @classmethod
+    def get_arche_dump(self):
+        return reverse('arche:rdf_collections')
+
     def get_next(self):
         next = Collection.objects.filter(id__gt=self.id)
         if next:
@@ -106,6 +110,10 @@ class Project(RepoObject):
     @classmethod
     def get_listview_url(self):
         return reverse('arche:browse_projects')
+
+    @classmethod
+    def get_arche_dump(self):
+        return reverse('arche:rdf_projects')
 
     def get_next(self):
         next = Project.objects.filter(id__gt=self.id)

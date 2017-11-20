@@ -11,6 +11,7 @@ urlpatterns = [
         name='project_edit'),
     url(r'^project/delete/(?P<pk>[0-9]+)$', views.ProjectDelete.as_view(),
         name='project_delete'),
+    url(r'projects-rdf/$', views.ProjectRDFView.as_view(), name='rdf_projects'),
     url(r'^collections/$', views.CollectionListView.as_view(), name='browse_collections'),
     url(r'^collection/detail/(?P<pk>[0-9]+)$', views.CollectionDetailView.as_view(),
         name='collection_detail'),
@@ -20,4 +21,5 @@ urlpatterns = [
         name='collection_edit'),
     url(r'^collection/delete/(?P<pk>[0-9]+)$', views.CollectionDelete.as_view(),
         name='collection_delete'),
+    url(r'collections-rdf/$', views.CollectionRDFView.as_view(), name='rdf_collections'),
 ]

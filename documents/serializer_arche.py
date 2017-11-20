@@ -6,11 +6,13 @@ from rdflib.namespace import DC, FOAF, RDFS, XSD
 from rdflib.namespace import SKOS
 from places.serializer_arche import place_to_arche, inst_to_arche, person_to_arche
 
-project_name = settings.ROOT_URLCONF.split('.')[0]
 ARCHE = Namespace('https://vocabs.acdh.oeaw.ac.at/schema#')
 ACDH = Namespace('https://id.acdh.oeaw.ac.at/')
 GEONAMES = Namespace('http://www.geonames.org/ontology#')
-base_url = "https://id.acdh.oeaw.ac.at/{}".format(project_name)
+try:
+    base_url = settings.ARCHE_SETTINGS['base_url']
+except AttributeError:
+    base_url = "https://please/provide/ARCHE-SETTINGS"
 
 LOCATION_PATH = "Y:\OREA_DOKU_PLATTFORM-Thunau_Vers2_aktuell 08 03 2017"
 
@@ -22,6 +24,7 @@ def document_to_arche(itmes):
     g = rdflib.Graph()
     for obj in itmes:
         subject = URIRef('/'.join([base_url, 'document', str(obj.id)]))
+        g.add((subject, RDF.type, ARCHE.Resource))
         if obj.filename:
             g.add((subject, ARCHE.hasTitle, Literal(obj.filename)))
         if obj.author.all():
