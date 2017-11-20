@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'stats',
     'browsing',
     'documents',
+    'arche',
 ]
 
 CRISPY_TEMPLATE_PACK = "bootstrap3"
@@ -126,3 +127,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
+
+
+# Settings for ARCHE-App
+
+ARCHE_SETTINGS = {
+    'project_name': ROOT_URLCONF.split('.')[0],
+    'base_url': "https://id.acdh.oeaw.ac.at/{}".format(ROOT_URLCONF.split('.')[0])
+}

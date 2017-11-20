@@ -5,11 +5,13 @@ from rdflib.namespace import DC, FOAF, RDFS
 from rdflib.namespace import SKOS
 from .models import Place, Institution
 
-project_name = settings.ROOT_URLCONF.split('.')[0]
 ARCHE = Namespace('https://vocabs.acdh.oeaw.ac.at/schema#')
 ACDH = Namespace('https://id.acdh.oeaw.ac.at/')
 GEONAMES = Namespace('http://www.geonames.org/ontology#')
-base_url = "https://id.acdh.oeaw.ac.at/{}".format(project_name)
+try:
+    base_url = settings.ARCHE_SETTINGS['base_url']
+except AttributeError:
+    base_url = "https://please/provide/ARCHE-SETTINGS"
 
 
 def place_to_arche(itmes):
