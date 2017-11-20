@@ -140,6 +140,11 @@
                 <td>{{ object.path }}</td>
             </tr>
             <tr>
+                <th class="col-sm-3">in Collection</th>
+                <td>
+                    <a href="{{ object.in_collection.get_absolute_url }}">{{ object.in_collection }}</a></td>
+            </tr>
+            <tr>
                 <th>Dateigröße KB</th>
                 <td>{{ object.filesize }}</td>
             </tr>

@@ -5,6 +5,7 @@ from rdflib import Graph, Literal, BNode, Namespace, RDF, URIRef, RDFS, Conjunct
 from rdflib.namespace import DC, FOAF, RDFS, XSD
 from rdflib.namespace import SKOS
 from places.serializer_arche import place_to_arche, inst_to_arche, person_to_arche
+from arche.serializer_arche import collection_to_arche
 
 ARCHE = Namespace('https://vocabs.acdh.oeaw.ac.at/schema#')
 ACDH = Namespace('https://id.acdh.oeaw.ac.at/')
@@ -50,4 +51,9 @@ def document_to_arche(itmes):
         if obj.get_file_location():
             abs_path = os.path.join(LOCATION_PATH, obj.get_file_location())
             g.add((subject, ARCHE.hasLocationPath, Literal(abs_path)))
+        if obj.in_collection:
+            col_g = collection_to_arche([obj.in_collection])
+            g = g + col_g
+            temp_col = URIRef('/'.join([base_url, 'collection', str(obj.in_collection.id)]))
+            g.add((subject, ARCHE.isPartOf, Literal(temp_col)))
     return g

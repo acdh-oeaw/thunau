@@ -5,6 +5,7 @@ from vocabs.models import SkosConcept
 from idprovider.models import IdProvider
 from places.models import Place, Person, Institution
 from bib.models import Book
+from arche.models import Collection
 
 
 class Document(IdProvider):
@@ -58,6 +59,10 @@ class Document(IdProvider):
     )
     reference = models.ManyToManyField(Book, blank=True, verbose_name="Literaturzitate")
     amendments = models.TextField(blank=True, verbose_name="Ergänzungen")
+    in_collection = models.ForeignKey(
+        Collection, blank=True, null=True, verbose_name="acdh:partOf",
+        help_text="Resource is located in collection", related_name="children"
+    )
 
     def get_file_name(self):
         if self.filename and self.digital_format.pref_label:
