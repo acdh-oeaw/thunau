@@ -55,5 +55,5 @@ def document_to_arche(itmes):
             col_g = collection_to_arche([obj.in_collection])
             g = g + col_g
             temp_col = URIRef('/'.join([base_url, 'collection', str(obj.in_collection.id)]))
-            g.add((subject, ARCHE.isPartOf, Literal(temp_col)))
+            g.add((subject, ARCHE.isPartOf, temp_col))
     return g
