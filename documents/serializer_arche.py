@@ -48,9 +48,9 @@ def document_to_arche(itmes):
             g.add((subject, ARCHE.hasNote, Literal(obj.note)))
         if obj.content:
             g.add((subject, ARCHE.hasNote, Literal(obj.content)))
-        if obj.get_file_location():
-            abs_path = os.path.join(LOCATION_PATH, obj.get_file_location())
-            g.add((subject, ARCHE.hasLocationPath, Literal(abs_path)))
+        if obj.get_file_uri():
+            abs_path = obj.get_file_uri()
+            g.add((subject, ARCHE.hasIdentifier, URIRef(abs_path)))
         if obj.in_collection:
             col_g = collection_to_arche([obj.in_collection])
             g = g + col_g

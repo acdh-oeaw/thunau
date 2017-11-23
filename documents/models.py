@@ -1,4 +1,5 @@
 import os
+import urllib.parse
 from django.db import models
 from django.core.urlresolvers import reverse
 from vocabs.models import SkosConcept
@@ -76,6 +77,17 @@ class Document(IdProvider):
                 self.path.replace('_', '\\'), self.get_file_name()
             )
             return file_loc
+        else:
+            return None
+
+    def get_file_uri(self):
+        if self.path and self.get_file_name():
+            file_loc = "/".join(
+                [self.path.replace('_', '/'), self.get_file_name()]
+            )
+            return "https://id.acdh.oeaw.ac.at/thunau/collection/{}".format(
+                urllib.parse.quote(file_loc, safe="")
+                )
         else:
             return None
 

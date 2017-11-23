@@ -24,6 +24,9 @@ def collection_to_arche(itmes):
     for obj in itmes:
         subject = URIRef('/'.join([base_url, 'collection', str(obj.id)]))
         g.add((subject, RDF.type, ARCHE.Collection))
+        if obj.has_id:
+            for x in obj.has_id.split(','):
+                g.add((subject, ARCHE.hasIdentifier, URIRef(x)))
         if obj.has_title:
             g.add((subject, ARCHE.hasTitle, Literal(obj.has_title)))
         if obj.description:

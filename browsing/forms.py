@@ -107,14 +107,11 @@ class DocumentFilterFormHelper(FormHelper):
             Accordion(
                 AccordionGroup(
                     'Basic search options',
-                    'name',
-                    'alternative_name',
+                    'filename',
                     css_id="basic_search_fields"
                 ),
                 AccordionGroup(
-                    'Advanced search'
-                    'geonames_id',
-                    'part_of',
+                    'Advanced search',
                     css_id="more"
                     ),
                 )

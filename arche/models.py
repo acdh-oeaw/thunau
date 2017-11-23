@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from places.models import Person, Institution
+import urllib.parse
 
 
 class RepoObject(models.Model):
@@ -13,6 +14,19 @@ class RepoObject(models.Model):
         help_text="A verbose description of certain aspects of an entity. \
         This is the most generic property, use more specific sub-properties where applicable."
     )
+    has_id = models.TextField(
+        blank=True, null=True, verbose_name="acdh:hasIdentifier",
+        help_text="Use this field to store any number of identifiers, separated with ','"
+    )
+
+    def humanize_id(self):
+        if self.has_id:
+            return urllib.parse.unquote(self.has_id)
+        else:
+            return None
+
+    def __str__(self):
+        return "{}".format(urllib.parse.unquote(self.has_title))
 
     class Meta:
         abstract = True
@@ -31,8 +45,6 @@ class Collection(RepoObject):
         related_name="contributes_to_collection"
     )
 
-    def __str__(self):
-        return "{}".format(self.has_title)
 
     def get_absolute_url(self):
         return reverse('arche:collection_detail', kwargs={'pk': self.id})

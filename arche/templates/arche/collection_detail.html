@@ -93,6 +93,16 @@
                             </tr>
                         </table>
                     {% endif %}
+                    {% if object.part_of %}
+                        <legend>Parent Collection</legend>
+                        <table class="table table-bordered table-hover">
+                            <tr>
+                                <td>
+                                    <a href="{{ object.part_of.get_absolute_url }}">{{ object.part_of }}</a>
+                                </td>
+                            </tr>
+                        </table>
+                    {% endif %}
                     {% if object.has_part.all %}
                         <legend>Child Collection(s)</legend>
                         <table class="table table-bordered table-hover">
@@ -101,16 +111,6 @@
                                     {% for x in object.has_part.all %}
                                         <a href="{{x.get_absolute_url}}">{{ x }}</a>
                                     {% endfor %}
-                                </td>
-                            </tr>
-                        </table>
-                    {% endif %}
-                    {% if object.part_of %}
-                        <legend>Parent Collection</legend>
-                        <table class="table table-bordered table-hover">
-                            <tr>
-                                <td>
-                                    <a href="{{ object.part_of.get_absolute_url }}">{{ object.part_of }}</a>
                                 </td>
                             </tr>
                         </table>
