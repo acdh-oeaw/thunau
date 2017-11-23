@@ -17,6 +17,7 @@
                 <div class="col-md-8">
                     <h1 style="text-align: center;">
                         <small>collection:</small> {{ object }}
+
                         {% if user.is_authenticated %}
                             <small>
                                 <a href="{% url 'arche:collection_edit' pk=object.id %}">
@@ -29,6 +30,12 @@
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true" title="edit"></span>
                                 </a>
                             </small>
+                            {% if object.has_id %}
+                                <br/>
+                                <h4 style="text-align: center;">
+                                    <a href="{{ object.has_id }}">ARCHE-Link</a>
+                                </h4>
+                            {% endif %}
                         {% endif %}
                     </h1>
                 </div>
@@ -63,10 +70,9 @@
                             </td>
                         </tr>
                     </table>
-
-                    <legend>Related Person</legend>
-                    <table class="table table-bordered table-hover">
-                        {% if object.has_contributor.all %}
+                    {% if object.has_contributor.all %}
+                        <legend>Related Person</legend>
+                        <table class="table table-bordered table-hover">
                             <tr>
                                 <th>
                                     acdh:hasContributor
@@ -77,8 +83,24 @@
                                     {% endfor %}
                                 </td>
                             </tr>
-                        {% endif %}
-                    </table>
+                        </table>
+                    {% endif %}
+
+                    {% if object.children.all %}
+                        <legend>Related Person</legend>
+                        <table class="table table-bordered table-hover">
+                            <tr>
+                                <th>
+                                    related objects
+                                </th>
+                                <td>
+                                    {% for x in object.children.all %}
+                                        <a href="{{ x.get_absolute_url }}">{{ x }}</a><br/>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        </table>
+                    {% endif %}
                 </div>
                 <div class="col-md-6">
                     {% if object.has_related_project.all %}
@@ -98,7 +120,7 @@
                         <table class="table table-bordered table-hover">
                             <tr>
                                 <td>
-                                    <a href="{{ object.part_of.get_absolute_url }}">{{ object.part_of }}</a>
+                                    <a href="{{ object.part_of.get_absolute_url }}">{{ object.part_of }}</a><br/>
                                 </td>
                             </tr>
                         </table>
@@ -109,7 +131,7 @@
                             <tr>
                                 <td>
                                     {% for x in object.has_part.all %}
-                                        <a href="{{x.get_absolute_url}}">{{ x }}</a>
+                                        <a href="{{x.get_absolute_url}}">{{ x }}</a><br/>
                                     {% endfor %}
                                 </td>
                             </tr>
