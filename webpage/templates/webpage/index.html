@@ -17,34 +17,49 @@
 
         <div class="container">
             <h2>Data-Count</h2>
+
             <div class="row">
-            {% create_object_count app='places' as models %}
+                {% create_object_count app='places' as models %}
                 {% for x in models %}
-                    <div class="col-md-4">
+                    <div class="col-md-3 grid-col">
                         <div class="grid-wrap">
                             {% if x.link %}
                                 <a href="{{ x.link }}"><h3>{{x.name}}</h3></a>
-                                {% else %}
+                            {% else %}
                                 <h3>{{x.name}}</h3>
                             {% endif %}
-                            <hr class="hrtile">
-                            <h3 class="count">{{x.count}}</h3>
+                            <p class="count">{{x.count}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                {% create_object_count app='arche' as models %}
+                {% for x in models %}
+                    <div class="col-md-6 grid-col">
+                        <div class="grid-wrap">
+                            {% if x.link %}
+                                <a href="{{ x.link }}"><h3>{{x.name}}</h3></a>
+                            {% else %}
+                                <h3>{{x.name}}</h3>
+                            {% endif %}
+                            <p class="count">{{x.count}}</p>
                         </div>
                     </div>
                 {% endfor %}
             </div>
             <div class="row">
-            {% create_object_count app='documents' as models %}
+                {% create_object_count app='documents' as models %}
                 {% for x in models %}
-                    <div class="col-md-4">
+                    <div class="col-md-12 grid-col">
                         <div class="grid-wrap">
                             {% if x.link %}
                                 <a href="{{ x.link }}"><h3>{{x.name}}</h3></a>
-                                {% else %}
+                            {% else %}
                                 <h3>{{x.name}}</h3>
                             {% endif %}
-                            <hr class="hrtile">
-                            <h3 class="count">{{x.count}}</h3>
+                            <p class="count">{{x.count}}</p>
                         </div>
                     </div>
                 {% endfor %}

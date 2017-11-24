@@ -99,6 +99,10 @@ class Document(IdProvider):
     def get_arche_dump(self):
         return reverse('browsing:rdf_documents')
 
+    @classmethod
+    def get_createview_url(self):
+        return reverse('documents:document_create')
+
     def get_next(self):
         next = Document.objects.filter(id__gt=self.id)
         if next:
