@@ -2,18 +2,6 @@ from .models import Collection
 import urllib.parse
 
 
-def hook_to_topcoll(prefix):
-    cols = Collection.objects.filter(part_of__isnull=True)
-    top_col, _ = Collection.objects.get_or_create(
-        has_id=prefix, has_title=prefix
-        )
-    for x in cols:
-        if x.has_title != prefix:
-            x.part_of = top_col
-            x.save()
-    return cols
-
-
 class CollectionBuilder:
 
     """ Takes a prefix, a filepath and a separator and creates nested Collection objects"""

@@ -10,14 +10,13 @@
                 <div class="col-md-2">
                     {% if object.get_prev %}
                     <h2>
-                        <a href="{% url 'arche:collection_detail' pk=object.get_prev %}"><span class="fa fa-chevron-left" aria-hidden="true" title="previous"></span></a>
+                        <a href="{% url 'arche:collection_detail' pk=object.get_prev %}"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="previous"></span></a>
                     </h2>
                     {% endif %}
                 </div>
                 <div class="col-md-8">
                     <h1 style="text-align: center;">
                         <small>collection:</small> {{ object }}
-
                         {% if user.is_authenticated %}
                             <small>
                                 <a href="{% url 'arche:collection_edit' pk=object.id %}">
@@ -30,19 +29,13 @@
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true" title="edit"></span>
                                 </a>
                             </small>
-                            {% if object.has_id %}
-                                <br/>
-                                <h4 style="text-align: center;">
-                                    <a href="{{ object.has_id }}">ARCHE-Link</a>
-                                </h4>
-                            {% endif %}
                         {% endif %}
                     </h1>
                 </div>
                 <div class="col-md-2">
                     <h2>
                         {% if object.get_next %}
-                        <a href="{% url 'arche:collection_detail' pk=object.get_next %}" style="float:right"><span class="fa fa-chevron-right" aria-hidden="true" title="next"></span></a>
+                        <a href="{% url 'arche:collection_detail' pk=object.get_next %}" style="float:right"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true" title="next"></span></a>
                     </h2>
                     {% endif %}
                 </div>
@@ -70,9 +63,10 @@
                             </td>
                         </tr>
                     </table>
-                    {% if object.has_contributor.all %}
-                        <legend>Related Person</legend>
-                        <table class="table table-bordered table-hover">
+
+                    <legend>Related Person</legend>
+                    <table class="table table-bordered table-hover">
+                        {% if object.has_contributor.all %}
                             <tr>
                                 <th>
                                     acdh:hasContributor
@@ -83,24 +77,8 @@
                                     {% endfor %}
                                 </td>
                             </tr>
-                        </table>
-                    {% endif %}
-
-                    {% if object.children.all %}
-                        <legend>Related Person</legend>
-                        <table class="table table-bordered table-hover">
-                            <tr>
-                                <th>
-                                    related objects
-                                </th>
-                                <td>
-                                    {% for x in object.children.all %}
-                                        <a href="{{ x.get_absolute_url }}">{{ x }}</a><br/>
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                        </table>
-                    {% endif %}
+                        {% endif %}
+                    </table>
                 </div>
                 <div class="col-md-6">
                     {% if object.has_related_project.all %}
@@ -120,7 +98,7 @@
                         <table class="table table-bordered table-hover">
                             <tr>
                                 <td>
-                                    <a href="{{ object.part_of.get_absolute_url }}">{{ object.part_of }}</a><br/>
+                                    <a href="{{ object.part_of.get_absolute_url }}">{{ object.part_of }}</a>
                                 </td>
                             </tr>
                         </table>
@@ -131,7 +109,7 @@
                             <tr>
                                 <td>
                                     {% for x in object.has_part.all %}
-                                        <a href="{{x.get_absolute_url}}">{{ x }}</a><br/>
+                                        <a href="{{x.get_absolute_url}}">{{ x }}</a>
                                     {% endfor %}
                                 </td>
                             </tr>
