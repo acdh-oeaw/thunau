@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from vocabs.models import SkosConcept
 from idprovider.models import IdProvider
 from places.models import Place, Person, Institution
-from bib.models import Book
 from arche.models import Collection
 
 
@@ -58,7 +57,6 @@ class Document(IdProvider):
         Institution, blank=True, null=True, related_name="place_digizization",
         verbose_name="Ort der Digitalisierung"
     )
-    reference = models.ManyToManyField(Book, blank=True, verbose_name="Literaturzitate")
     amendments = models.TextField(blank=True, verbose_name="Ergänzungen")
     in_collection = models.ForeignKey(
         Collection, blank=True, null=True, verbose_name="acdh:partOf",
@@ -98,6 +96,10 @@ class Document(IdProvider):
     @classmethod
     def get_arche_dump(self):
         return reverse('browsing:rdf_documents')
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse('documents:document_create')
 
     def get_next(self):
         next = Document.objects.filter(id__gt=self.id)

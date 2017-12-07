@@ -12,7 +12,11 @@ class AlternativeName(IdProvider):
 
     @classmethod
     def get_listview_url(self):
-        return reverse('places:alternativename_list')
+        return reverse('browsing:browse_altnames')
+
+    @classmethod
+    def get_createview_url(self):
+        return reverse('places:alternativename_create')
 
     @classmethod
     def get_createview_url(self):

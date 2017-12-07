@@ -45,7 +45,6 @@ class Collection(RepoObject):
         related_name="contributes_to_collection"
     )
 
-
     def get_absolute_url(self):
         return reverse('arche:collection_detail', kwargs={'pk': self.id})
 
