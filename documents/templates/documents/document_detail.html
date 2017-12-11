@@ -133,15 +133,21 @@
             </tr>
         </table>
 
-        <legend>Digitzied Object {% if object.has_binary %}
-        {% for x in object.has_binary.all %}
+        <legend>Digitzied Object
+            {% if object.has_binary %}
+                {% for x in object.has_binary.all %}
+                    <a href="{{ x.upload.url }}">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                    </a>
+                    <img src="{{ x.upload.url }}" width="50%" />
+                    <object data="{{ x.upload.url }}" type="application/pdf" width="100%" height="100%">
+                        <p>Alternative text - include a link <a href="{{ x.upload.url }}">to the PDF!</a></p>
+                    </object>
+                    <iframe src="http://docs.google.com/gview?url={{ x.upload.url }}&embedded=true"></iframe>
+                {% endfor %}
+            {% endif %}
+        </legend>
 
-                <a href="{{ x.upload.url }}">
-                    <i class="fa fa-download" aria-hidden="true"></i>
-                </a>
-
-        {% endfor %}
-        {% endif %}</legend>
 
         <table class="table table-bordered table-hover">
             <tr>
@@ -167,6 +173,7 @@
                 <td>{{ object.digital_format }}</td>
             </tr>
         </table>
+
 
 
         <legend>KG/Areal: <a href="{{ object.place_of_origin.get_absolute_url }}">{{ object.place_of_origin }}</a></legend>
