@@ -133,10 +133,16 @@
             </tr>
         </table>
 
-        <legend>Digitzied Object</legend>
+        <legend>Digitzied Object {% if object.has_binary %}
         {% for x in object.has_binary.all %}
-            {{ x }}
+
+                <a href="{{ x.upload.url }}">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                </a>
+
         {% endfor %}
+        {% endif %}</legend>
+
         <table class="table table-bordered table-hover">
             <tr>
                 <th class="col-sm-3">Dateipfad</th>
@@ -171,7 +177,6 @@
             {% if user.is_authenticated %}
                 <a class="btn btn-primary" href="{% url 'documents:document_update' pk=object.pk %}" role="button">edit document</a>
                 <a class ="btn btn-danger" href="{% url 'documents:document_delete' pk=object.id %}">delete</a>
-
             {% endif %}
         </div>
     </div>

@@ -1,4 +1,6 @@
 from django.conf.urls import url, include
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from rest_framework import routers
 from places.apis_views import PlaceViewSet, GeoJsonViewSet
@@ -28,3 +30,6 @@ urlpatterns = [
     url(r'^places/', include('places.urls', namespace='places')),
     url(r'^', include('webpage.urls', namespace='webpage')),
 ]
+
+if settings.DEBUG is True:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
