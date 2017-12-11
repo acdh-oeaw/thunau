@@ -46,6 +46,7 @@ class PersonFilterFormHelper(FormHelper):
                 AccordionGroup(
                     'Basic search options',
                     'name',
+                    'forename',
                     'written_name',
                     css_id="basic_search_fields"
                 ),
@@ -126,10 +127,16 @@ class DocumentFilterFormHelper(FormHelper):
                 AccordionGroup(
                     'Basic search options',
                     'filename',
+                    'digital_format',
+                    'path',
+                    'entry_order',
                     css_id="basic_search_fields"
                 ),
                 AccordionGroup(
                     'Advanced search',
+                    'institution',
+                    'medium',
+                    'analogue_format',
                     css_id="more"
                     ),
                 )

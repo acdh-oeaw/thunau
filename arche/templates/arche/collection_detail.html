@@ -51,7 +51,7 @@
                                 acdh:hasTitle
                             </th>
                             <td>
-                                {{ object.has_title }}
+                                {{ object.has_title|truncatechars:40 }}
                             </td>
                         </tr>
                         <tr>
@@ -95,25 +95,32 @@
                     {% endif %}
                     {% if object.part_of %}
                         <legend>Parent Collection</legend>
-                        <table class="table table-bordered table-hover">
-                            <tr>
-                                <td>
+                            <ul>
+                                <li>
                                     <a href="{{ object.part_of.get_absolute_url }}">{{ object.part_of }}</a>
-                                </td>
-                            </tr>
-                        </table>
+                                </li>
+                            </ul>
                     {% endif %}
                     {% if object.has_part.all %}
                         <legend>Child Collection(s)</legend>
-                        <table class="table table-bordered table-hover">
-                            <tr>
-                                <td>
-                                    {% for x in object.has_part.all %}
+                            <ul>
+                                {% for x in object.has_part.all %}
+                                    <li>
                                         <a href="{{x.get_absolute_url}}">{{ x }}</a>
-                                    {% endfor %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                    {% endif %}
+                    {% if object.children.all %}
+                        <legend>Resources</legend>
+                            <ul>
+                                {% for x in object.children.all %}
+                                    <li>
+                                        <a href="{{ x.get_absolute_url }}">{{ x }}</a>
+                                    </li>
+                                {% endfor %}
                                 </td>
-                            </tr>
-                        </table>
+                            </ul>
                     {% endif %}
                 </div>
             </div>

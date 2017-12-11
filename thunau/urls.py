@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
     url(r'^arche/', include('arche.urls', namespace='arche')),
+    url(r'^images/', include('images.urls', namespace='images')),
     url(r'^documents/', include('documents.urls', namespace='documents')),
     url(r'^browsing/', include('browsing.urls', namespace='browsing')),
     url(r'^sparql/', include('sparql.urls', namespace='sparql')),

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'browsing',
     'documents',
     'arche',
+    'images',
 ]
 
 CRISPY_TEMPLATE_PACK = "bootstrap3"

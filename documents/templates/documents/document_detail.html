@@ -134,6 +134,9 @@
         </table>
 
         <legend>Digitzied Object</legend>
+        {% for x in object.has_binary.all %}
+            {{ x }}
+        {% endfor %}
         <table class="table table-bordered table-hover">
             <tr>
                 <th class="col-sm-3">Dateipfad</th>
@@ -160,7 +163,7 @@
         </table>
 
 
-        <legend>KG/Areal: {{object.place_of_origin}}</legend>
+        <legend>KG/Areal: <a href="{{ object.place_of_origin.get_absolute_url }}">{{ object.place_of_origin }}</a></legend>
             {% if object.place_of_origin.lat %}
                 <div id="map"></div><br/>
             {% endif %}

@@ -44,7 +44,8 @@ class Document(IdProvider):
     )
     combination = models.CharField(max_length=300, blank=True, verbose_name="Kombination")
     location_id = models.CharField(max_length=300, blank=True, verbose_name="Fundnummer in FDB")
-    place_of_origin = models.ForeignKey(Place, blank=True, null=True, verbose_name="KG/Areal")
+    place_of_origin = models.ForeignKey(
+        Place, blank=True, null=True, verbose_name="KG/Areal", related_name="place_of_doc")
     location_digitized_object = models.CharField(
         max_length=300, blank=True, verbose_name="Aufbewahrung Datei"
     )
